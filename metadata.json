@@ -1,0 +1,8 @@
+{
+  "name": "Nova Launcher",
+  "description": "A highly customizable, powerful, and fluid Android home launcher featuring grid layouts, app drawer, dock, custom gestures, widgets, search, and deep personalization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
