@@ -123,7 +123,7 @@ private fun DraggableIcon(p:Placement,a:NovaApp,s:NovaState,vm:LauncherViewModel
                         Image(a.icon.toBitmap(72,72).asImageBitmap(),a.label,Modifier.size(50.dp).clip(RoundedCornerShape(15.dp)))
                     }
                 }
-                IconButton(onClick={vm::drawer}){Icon(Icons.Rounded.Apps,"التطبيقات")}
+                IconButton(onClick={vm.drawer()}){Icon(Icons.Rounded.Apps,"التطبيقات")}
             }
         }
     }
