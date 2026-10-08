@@ -7,6 +7,7 @@ import androidx.activity.EdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.core.view.WindowCompat
 import com.amjrd.novalauncher.core.LauncherViewModel
 
