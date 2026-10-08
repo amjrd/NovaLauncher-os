@@ -3,6 +3,7 @@ package com.amjrd.novalauncher.core
 import android.app.Application
 import android.content.Context
 import android.content.pm.LauncherApps
+import android.os.Process
 import android.os.UserHandle
 import android.os.UserManager
 import androidx.lifecycle.AndroidViewModel
@@ -54,7 +55,7 @@ class LauncherViewModel(app: Application) : AndroidViewModel(app) {
         val la = context.getSystemService(LauncherApps::class.java)
         val um = context.getSystemService(UserManager::class.java)
         val user = la.profiles.firstOrNull { um.getSerialNumberForUser(it) == app.userSerial }
-            ?: UserHandle.myUserHandle()
+            ?: Process.myUserHandle()
         la.startMainActivity(app.component, user, null, null)
     }
 
