@@ -1,7 +1,7 @@
 name: Build Nova Launcher APK
 on:
   push:
-    branches: [ main ]
+    branches: [ main, launcher-built-android17 ]
   workflow_dispatch:
 jobs:
   build:
@@ -13,10 +13,10 @@ jobs:
           distribution: temurin
           java-version: '21'
       - uses: android-actions/setup-android@v3
-      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - run: sdkmanager "platforms;android-37" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
       - run: chmod +x gradlew && ./gradlew assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
         with:
-          name: NovaLauncher-debug
+          name: NovaLauncher-Android17-debug
           path: app/build/outputs/apk/debug/app-debug.apk
