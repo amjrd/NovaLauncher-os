@@ -3,7 +3,6 @@ package com.amjrd.novalauncher
 import android.app.role.RoleManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.EdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,8 +17,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        EdgeToEdge.enable(this)
-        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         vm.refresh(this)
 
         setContent {
