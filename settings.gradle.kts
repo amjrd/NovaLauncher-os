@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Nova Launcher"
+rootProject.name = "Lawnchair"
 include(":app")

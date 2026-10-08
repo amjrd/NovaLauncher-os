@@ -113,6 +113,8 @@ fun DockBar(
                             iconShape = settings.iconShape,
                             iconScale = settings.iconScale * 0.95f,
                             showLabel = false,
+                            useThemedIcons = settings.useThemedIcons,
+                            themedAccentColor = accentColor,
                             onClick = { onAppClick(app.id) },
                             onLongClick = { onAppLongClick(app.id) }
                         )

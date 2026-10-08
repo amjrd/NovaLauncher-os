@@ -89,7 +89,7 @@ fun NovaSettingsScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = "OS Experience & Settings",
+                    text = "Lawnchair Preferences",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     color = Color.White
@@ -113,7 +113,7 @@ fun NovaSettingsScreen(
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Section 0: OS Design Engine (Nothing OS, iOS, Pixel 17, Fusion)
+            // Section 0: OS Design Engine (Lawnchair 16, Nothing OS, iOS 18, Fusion)
             item {
                 SettingsSectionHeader(title = "Flagship OS Design Engine", icon = Icons.Default.AutoAwesome, accentColor = accentColor)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -125,27 +125,28 @@ fun NovaSettingsScreen(
                                 .fillMaxWidth()
                                 .clickable {
                                     val newAccent = when (os) {
+                                        OSDesignStyle.LAWNCHAIR_16 -> 0xFF1A73E8L
                                         OSDesignStyle.NOTHING_OS -> 0xFFD71921L
                                         OSDesignStyle.IOS -> 0xFF007AFFL
-                                        OSDesignStyle.PIXEL_17 -> 0xFF7CE4B5L
                                         OSDesignStyle.FUSION -> 0xFFD71921L
                                     }
                                     val newDock = when (os) {
                                         OSDesignStyle.IOS, OSDesignStyle.FUSION -> DockBackgroundStyle.IOS_FROSTED_GLASS
                                         OSDesignStyle.NOTHING_OS -> DockBackgroundStyle.GLASS_BLUR
-                                        OSDesignStyle.PIXEL_17 -> DockBackgroundStyle.CARD_SHADOW
+                                        OSDesignStyle.LAWNCHAIR_16 -> DockBackgroundStyle.CARD_SHADOW
                                     }
                                     val newShape = when (os) {
                                         OSDesignStyle.IOS, OSDesignStyle.FUSION -> IconShape.SQUIRCLE
                                         OSDesignStyle.NOTHING_OS -> IconShape.CIRCLE
-                                        OSDesignStyle.PIXEL_17 -> IconShape.ROUNDED_SQUARE
+                                        OSDesignStyle.LAWNCHAIR_16 -> IconShape.ROUNDED_SQUARE
                                     }
                                     viewModel.updateSettings(
                                         settings.copy(
                                             osStyle = os,
                                             accentColorHex = newAccent,
                                             dockBackgroundStyle = newDock,
-                                            iconShape = newShape
+                                            iconShape = newShape,
+                                            useThemedIcons = (os == OSDesignStyle.LAWNCHAIR_16)
                                         )
                                     )
                                 },
@@ -242,6 +243,38 @@ fun NovaSettingsScreen(
                                     )
                                 }
                             }
+                        }
+
+                        Divider(color = Color(0xFF292C45), modifier = Modifier.padding(vertical = 14.dp))
+
+                        // Themed Icons Toggle (Material You)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = "Themed Icons",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = "Tint app icons with Material You colors",
+                                    fontSize = 11.sp,
+                                    color = Color(0xFF7E839E)
+                                )
+                            }
+                            Switch(
+                                checked = settings.useThemedIcons,
+                                onCheckedChange = {
+                                    viewModel.updateSettings(settings.copy(useThemedIcons = it))
+                                },
+                                colors = SwitchDefaults.colors(checkedThumbColor = accentColor, checkedTrackColor = accentColor.copy(alpha = 0.5f))
+                            )
                         }
 
                         Divider(color = Color(0xFF292C45), modifier = Modifier.padding(vertical = 14.dp))
@@ -629,13 +662,13 @@ fun NovaSettingsScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Text(
-                                    text = "Flagship OS Fusion (Nothing OS • iOS 18 • Pixel 17)",
+                                    text = "Lawnchair 16 Dev (Android 16 Quickstep)",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
                                 )
                                 Text(
-                                    text = "Dynamic Island, Dot-matrix Nothing widgets & Monet Material You",
+                                    text = "Smartspacer At a Glance, Material You Themed Icons & Monet engine",
                                     fontSize = 11.sp,
                                     color = Color(0xFF888B9E)
                                 )

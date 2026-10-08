@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -144,6 +146,8 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onDoubleTap = { viewModel.isDeviceLocked = true },
@@ -241,7 +245,7 @@ fun HomeScreen(
                                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                                 )
                             }
-                            OSDesignStyle.PIXEL_17 -> {
+                            OSDesignStyle.LAWNCHAIR_16 -> {
                                 PixelAtAGlanceWidget(
                                     onCalendarClick = {
                                         val cal = viewModel.allApps.find { it.id == "calendar" }
@@ -322,6 +326,8 @@ fun HomeScreen(
                                         iconShape = settings.iconShape,
                                         iconScale = settings.iconScale,
                                         showLabel = settings.showLabels,
+                                        useThemedIcons = settings.useThemedIcons,
+                                        themedAccentColor = accentColor,
                                         onClick = { viewModel.openApp(app, context) },
                                         onLongClick = { viewModel.activeOverlay = ActiveOverlay.AppContext(app) }
                                     )
@@ -363,6 +369,8 @@ fun HomeScreen(
                                         iconShape = settings.iconShape,
                                         iconScale = settings.iconScale,
                                         showLabel = settings.showLabels,
+                                        useThemedIcons = settings.useThemedIcons,
+                                        themedAccentColor = accentColor,
                                         onClick = { viewModel.openApp(app, context) },
                                         onLongClick = { viewModel.activeOverlay = ActiveOverlay.AppContext(app) }
                                     )

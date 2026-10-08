@@ -159,47 +159,44 @@ fun NovaSearchBarWidget(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .testTag("nova_search_bar_widget")
+            .testTag("lawnchair_search_bar_widget")
             .clickable { onSearchClick() },
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(32.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF1D2133).copy(alpha = 0.85f)
+            containerColor = Color(0xFF202124).copy(alpha = 0.92f)
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 11.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                // Iconic Google G emblem
                 Box(
                     modifier = Modifier
-                        .size(34.dp)
+                        .size(32.dp)
                         .clip(CircleShape)
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(accentColor, Color(0xFF00E5FF))
-                            )
-                        ),
+                        .background(Color(0xFF303134)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.RocketLaunch,
-                        contentDescription = "Nova",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
+                    Text(
+                        text = "G",
+                        fontWeight = FontWeight.Black,
+                        fontSize = 18.sp,
+                        color = Color(0xFF4285F4)
                     )
                 }
 
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Text(
-                    text = "Search apps, math, web…",
-                    fontSize = 14.sp,
-                    color = Color(0xFF9094AA),
+                    text = "Search phone and web…",
+                    fontSize = 14.5.sp,
+                    color = Color(0xFF9AA0A6),
                     fontWeight = FontWeight.Normal
                 )
             }
@@ -208,15 +205,15 @@ fun NovaSearchBarWidget(
                 Icon(
                     imageVector = Icons.Default.Mic,
                     contentDescription = "Voice Search",
-                    tint = accentColor,
-                    modifier = Modifier.size(20.dp)
+                    tint = Color(0xFFEA4335),
+                    modifier = Modifier.size(21.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(14.dp))
                 Icon(
                     imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
+                    contentDescription = "Lens / Search",
+                    tint = Color(0xFFFBBC05),
+                    modifier = Modifier.size(21.dp)
                 )
             }
         }

@@ -112,6 +112,8 @@ fun AppIconItem(
     iconScale: Float = 1.0f,
     showLabel: Boolean = true,
     labelColor: Color = Color.White,
+    useThemedIcons: Boolean = false,
+    themedAccentColor: Color = Color(0xFF1A73E8),
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: () -> Unit = {}
@@ -143,31 +145,37 @@ fun AppIconItem(
     ) {
         val iconSize = (56 * iconScale).dp
 
+        val backgroundModifier = if (useThemedIcons) {
+            Modifier.background(themedAccentColor.copy(alpha = 0.25f))
+        } else {
+            Modifier.background(
+                Brush.radialGradient(
+                    colors = listOf(
+                        baseColor.copy(alpha = 0.95f),
+                        baseColor.copy(alpha = 0.7f),
+                        Color(0xFF1A1C29)
+                    )
+                )
+            )
+        }
+
         Box(
             modifier = Modifier
                 .size(iconSize)
                 .shadow(
                     elevation = 6.dp,
                     shape = shape,
-                    ambientColor = baseColor.copy(alpha = 0.4f),
-                    spotColor = baseColor.copy(alpha = 0.6f)
+                    ambientColor = if (useThemedIcons) themedAccentColor.copy(alpha = 0.3f) else baseColor.copy(alpha = 0.4f),
+                    spotColor = if (useThemedIcons) themedAccentColor.copy(alpha = 0.5f) else baseColor.copy(alpha = 0.6f)
                 )
                 .clip(shape)
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            baseColor.copy(alpha = 0.95f),
-                            baseColor.copy(alpha = 0.7f),
-                            Color(0xFF1A1C29)
-                        )
-                    )
-                ),
+                .then(backgroundModifier),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = vector,
                 contentDescription = app.displayLabel,
-                tint = Color.White,
+                tint = if (useThemedIcons) themedAccentColor else Color.White,
                 modifier = Modifier.size((28 * iconScale).dp)
             )
         }

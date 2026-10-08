@@ -1,6 +1,6 @@
 {
-  "name": "Nova Launcher",
-  "description": "A highly customizable, powerful, and fluid Android home launcher featuring grid layouts, app drawer, dock, custom gestures, widgets, search, and deep personalization.",
+  "name": "Lawnchair",
+  "description": "Lawnchair 16 Dev: Powerful, customizable Pixel-style Android launcher featuring Smartspacer At a Glance, Material You Monet dynamic theming, custom icon packs, gesture controls, and fluid desktop grids.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

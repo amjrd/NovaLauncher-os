@@ -7,11 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -40,10 +36,10 @@ fun OSSwitcherBar(
     val currentStyle = viewModel.settings.osStyle
 
     val options = listOf(
+        Triple(OSDesignStyle.LAWNCHAIR_16, "🌱 Lawnchair", 0xFF1A73E8L),
         Triple(OSDesignStyle.FUSION, "⚡ Fusion", 0xFFD71921L),
         Triple(OSDesignStyle.NOTHING_OS, "🔴 Nothing", 0xFFD71921L),
-        Triple(OSDesignStyle.IOS, "🍏 iOS 18", 0xFF007AFFL),
-        Triple(OSDesignStyle.PIXEL_17, "🤖 Pixel 17", 0xFF7CE4B5L)
+        Triple(OSDesignStyle.IOS, "🍏 iOS 18", 0xFF007AFFL)
     )
 
     Card(
@@ -82,17 +78,17 @@ fun OSSwitcherBar(
                             val newDock = when (style) {
                                 OSDesignStyle.IOS, OSDesignStyle.FUSION -> DockBackgroundStyle.IOS_FROSTED_GLASS
                                 OSDesignStyle.NOTHING_OS -> DockBackgroundStyle.GLASS_BLUR
-                                OSDesignStyle.PIXEL_17 -> DockBackgroundStyle.CARD_SHADOW
+                                OSDesignStyle.LAWNCHAIR_16 -> DockBackgroundStyle.CARD_SHADOW
                             }
                             val newShape = when (style) {
                                 OSDesignStyle.IOS, OSDesignStyle.FUSION -> IconShape.SQUIRCLE
                                 OSDesignStyle.NOTHING_OS -> IconShape.CIRCLE
-                                OSDesignStyle.PIXEL_17 -> IconShape.ROUNDED_SQUARE
+                                OSDesignStyle.LAWNCHAIR_16 -> IconShape.ROUNDED_SQUARE
                             }
                             val newWallpaper = when (style) {
                                 OSDesignStyle.NOTHING_OS -> "nothing_dark"
                                 OSDesignStyle.IOS -> "ios_aurora"
-                                OSDesignStyle.PIXEL_17 -> "pixel_monet"
+                                OSDesignStyle.LAWNCHAIR_16 -> "pixel_monet"
                                 OSDesignStyle.FUSION -> "nothing_dark"
                             }
                             viewModel.updateSettings(
@@ -101,7 +97,8 @@ fun OSSwitcherBar(
                                     accentColorHex = accentHex,
                                     dockBackgroundStyle = newDock,
                                     iconShape = newShape,
-                                    wallpaperId = newWallpaper
+                                    wallpaperId = newWallpaper,
+                                    useThemedIcons = (style == OSDesignStyle.LAWNCHAIR_16)
                                 )
                             )
                         }
@@ -110,7 +107,7 @@ fun OSSwitcherBar(
                 ) {
                     Text(
                         text = label,
-                        fontSize = 11.5.sp,
+                        fontSize = 11.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (isSelected) Color.White else Color(0xFF8E92A8),
                         maxLines = 1

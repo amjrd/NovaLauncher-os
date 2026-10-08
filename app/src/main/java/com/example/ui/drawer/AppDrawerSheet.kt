@@ -233,6 +233,8 @@ fun AppDrawerSheet(
                             iconShape = viewModel.settings.iconShape,
                             iconScale = viewModel.settings.iconScale * 0.95f,
                             showLabel = true,
+                            useThemedIcons = viewModel.settings.useThemedIcons,
+                            themedAccentColor = accentColor,
                             onClick = { onAppClick(app) },
                             onLongClick = { onAppLongClick(app) }
                         )

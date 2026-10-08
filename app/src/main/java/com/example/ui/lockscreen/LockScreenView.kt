@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -122,7 +124,9 @@ fun LockScreenView(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 28.dp, bottom = 32.dp, start = 24.dp, end = 24.dp),
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(top = 16.dp, bottom = 20.dp, start = 24.dp, end = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -196,8 +200,8 @@ fun LockScreenView(
                         }
                     }
 
-                    OSDesignStyle.PIXEL_17 -> {
-                        // Pixel 17 Massive Dual-Line Material You Clock
+                    OSDesignStyle.LAWNCHAIR_16 -> {
+                        // Lawnchair 16 / Pixel Massive Dual-Line Material You Clock
                         Column(horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth()) {
                             Text(
                                 text = hourOnly,
@@ -277,7 +281,7 @@ fun LockScreenView(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable { onUnlock() }
                     ) {
-                        if (settings.osStyle == OSDesignStyle.PIXEL_17) {
+                        if (settings.osStyle == OSDesignStyle.LAWNCHAIR_16) {
                             Icon(
                                 imageVector = Icons.Default.Fingerprint,
                                 contentDescription = "Fingerprint",
