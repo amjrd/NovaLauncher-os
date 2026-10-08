@@ -12,6 +12,7 @@ import com.example.model.AppItem
 import com.example.model.FolderItem
 import com.example.model.IconShape
 import com.example.model.LauncherSettings
+import com.example.model.OSDesignStyle
 import com.example.model.ThemeMode
 import com.example.model.WidgetItem
 import com.example.model.WidgetType
@@ -30,6 +31,8 @@ sealed class ActiveOverlay {
 }
 
 class LauncherViewModel : ViewModel() {
+
+    private var store: WorkspaceStore? = null
 
     var settings by mutableStateOf(LauncherSettings())
         private set
@@ -67,6 +70,31 @@ class LauncherViewModel : ViewModel() {
     }
 
     fun initDeviceApps(context: Context) {
+        val s = WorkspaceStore(context)
+        store = s
+
+        // Load saved settings
+        settings = s.loadSettings()
+        quickNoteText = s.loadQuickNote(quickNoteText)
+
+        val savedPage0 = s.loadDesktopPage(0, desktopPage0AppIds.toList())
+        if (savedPage0.isNotEmpty()) {
+            desktopPage0AppIds.clear()
+            desktopPage0AppIds.addAll(savedPage0)
+        }
+
+        val savedPage1 = s.loadDesktopPage(1, desktopPage1AppIds.toList())
+        if (savedPage1.isNotEmpty()) {
+            desktopPage1AppIds.clear()
+            desktopPage1AppIds.addAll(savedPage1)
+        }
+
+        val savedDock = s.loadDock(dockAppIds.toList())
+        if (savedDock.isNotEmpty()) {
+            dockAppIds.clear()
+            dockAppIds.addAll(savedDock)
+        }
+
         val extra = AppRepository.loadDeviceInstalledApps(context)
         for (item in extra) {
             if (allApps.none { it.id == item.id || it.packageName == item.packageName }) {
@@ -107,30 +135,32 @@ class LauncherViewModel : ViewModel() {
         widgets.add(WidgetItem("w_note", WidgetType.QUICK_NOTE, pageIndex = 1, order = 2))
 
         settings = LauncherSettings()
+        store?.saveSettings(settings)
     }
 
     fun updateSettings(newSettings: LauncherSettings) {
         settings = newSettings
+        store?.saveSettings(newSettings)
     }
 
     fun setWallpaper(wallpaperId: String) {
-        settings = settings.copy(wallpaperId = wallpaperId)
+        updateSettings(settings.copy(wallpaperId = wallpaperId))
     }
 
     fun setIconShape(shape: IconShape) {
-        settings = settings.copy(iconShape = shape)
+        updateSettings(settings.copy(iconShape = shape))
     }
 
     fun setGrid(rows: Int, cols: Int) {
-        settings = settings.copy(gridRows = rows, gridCols = cols)
+        updateSettings(settings.copy(gridRows = rows, gridCols = cols))
     }
 
     fun setAccentColor(colorHex: Long) {
-        settings = settings.copy(accentColorHex = colorHex)
+        updateSettings(settings.copy(accentColorHex = colorHex))
     }
 
     fun setThemeMode(mode: ThemeMode) {
-        settings = settings.copy(themeMode = mode)
+        updateSettings(settings.copy(themeMode = mode))
     }
 
     fun toggleAppHidden(appId: String) {
@@ -151,17 +181,25 @@ class LauncherViewModel : ViewModel() {
 
     fun addAppToDesktop(appId: String, page: Int = currentDesktopPage) {
         if (page == 0) {
-            if (!desktopPage0AppIds.contains(appId)) desktopPage0AppIds.add(appId)
+            if (!desktopPage0AppIds.contains(appId)) {
+                desktopPage0AppIds.add(appId)
+                store?.saveDesktopPage(0, desktopPage0AppIds)
+            }
         } else {
-            if (!desktopPage1AppIds.contains(appId)) desktopPage1AppIds.add(appId)
+            if (!desktopPage1AppIds.contains(appId)) {
+                desktopPage1AppIds.add(appId)
+                store?.saveDesktopPage(1, desktopPage1AppIds)
+            }
         }
     }
 
     fun removeAppFromDesktop(appId: String, page: Int = currentDesktopPage) {
         if (page == 0) {
             desktopPage0AppIds.remove(appId)
+            store?.saveDesktopPage(0, desktopPage0AppIds)
         } else {
             desktopPage1AppIds.remove(appId)
+            store?.saveDesktopPage(1, desktopPage1AppIds)
         }
     }
 
@@ -190,7 +228,6 @@ class LauncherViewModel : ViewModel() {
     }
 
     fun openApp(app: AppItem, context: Context) {
-        // First try system launch for real installed apps
         if (app.id.startsWith("pkg_")) {
             try {
                 val launchIntent = context.packageManager.getLaunchIntentForPackage(app.packageName)
@@ -198,10 +235,8 @@ class LauncherViewModel : ViewModel() {
                     context.startActivity(launchIntent)
                     return
                 }
-            } catch (_: Exception) {
-            }
+            } catch (_: Exception) {}
         }
-        // Launch custom simulation overlay
         activeOverlay = ActiveOverlay.SimulatedAppView(app)
     }
 
