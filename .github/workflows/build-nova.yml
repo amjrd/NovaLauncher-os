@@ -12,8 +12,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager "platforms;android-37" "build-tools;36.0.0"
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses > /dev/null
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-37" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
       - run: chmod +x gradlew && ./gradlew assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
