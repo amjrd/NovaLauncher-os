@@ -3,9 +3,19 @@ name: Build Android APK
 on:
   push:
     branches: [ "**" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "**" ]
   workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish as GitHub Release?'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -15,6 +25,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -27,11 +39,30 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Prepare APK Output
+        run: |
+          mkdir -p release-output
+          cp app/build/outputs/apk/debug/app-debug.apk release-output/NovaLauncher-OS-v1.0.apk
+          echo "### 🚀 APK Build Succeeded!" >> $GITHUB_STEP_SUMMARY
+          echo "- **File:** NovaLauncher-OS-v1.0.apk" >> $GITHUB_STEP_SUMMARY
+          echo "- **Size:** $(du -h release-output/NovaLauncher-OS-v1.0.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: NovaLauncher-OS-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: NovaLauncher-OS-v1.0-APK
+          path: release-output/NovaLauncher-OS-v1.0.apk
           retention-days: 30
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-output/NovaLauncher-OS-v1.0.apk
+          name: "Nova Launcher OS Release ${{ github.ref_name }}"
+          generate_release_notes: true
+          draft: false
+          prerelease: false
